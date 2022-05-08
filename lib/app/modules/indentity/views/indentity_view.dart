@@ -15,38 +15,139 @@ class IndentityView extends GetView<IndentityController> {
     return Obx(
       () => Scaffold(
         backgroundColor: Colors.yellow,
-        appBar: AppBar(
-          title: const Text('Cat Identifier'),
-        ),
+        // appBar: AppBar(
+        //   title: const Text('Cat Identifier'),
+        // ),
         body: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 180.w,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: imageFramBlurBack(),
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                floating: true,
+                snap: true,
+                expandedHeight: 230.0,
+                centerTitle: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Container(
+                    // color: Colors.red,
+                    child: AutoSizeText(
+                      '${controller.result}'.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            AutoSizeText('${controller.result}'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
+                  ),
+                  background: Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.red,
+                    child: SafeArea(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: imageFramBlurBack(),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                              child: controller.catInfo.value != null
+                                  ? SizedBox()
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        AutoSizeText(
+                                          '${controller.result}'.toUpperCase(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(''),
+                                      ],
+                                    ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 27.sp),
+                    SizedBox(height: 27.sp),
+                    Text(
+                      'Breed Info'.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      child: Column(
+                        children: [
+                          Text('Details'),
+                          Text('${controller.catInfo.value.description}'),
+                          Divider(),
+                          Text('Temperament'),
+                          Text('${controller.catInfo.value.temperament}'),
+                          Divider(),
+                          Text('Origin'),
+                          Text('${controller.catInfo.value.origin}'),
+                          Divider(),
+                          Text('Life Span'),
+                          Text('${controller.catInfo.value.lifeSpan}'),
+                          Divider(),
+                          Text('Weight'),
+                          Text(
+                              '${controller.catInfo.value.weight?.metric ?? 0} Kg'),
+                          Divider(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 27.sp),
+                    SizedBox(height: 27.sp),
+                    Text(
+                      'Breed Info'.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
+                    controller.catInfo.value != null
+                        ? SizedBox()
+                        : Container(
+                            child: Column(
+                              children: [
+                                Text('Details'),
+                                Text('${controller.catInfo.value.description}'),
+                                Divider(),
+                                Text('Temperament'),
+                                Text('${controller.catInfo.value.temperament}'),
+                                Divider(),
+                                Text('Origin'),
+                                Text('${controller.catInfo.value.origin}'),
+                                Divider(),
+                                Text('Life Span'),
+                                Text('${controller.catInfo.value.lifeSpan}'),
+                                Divider(),
+                                Text('Weight'),
+                                Text(
+                                    '${controller.catInfo.value.weight?.metric ?? 0} Kg'),
+                                Divider(),
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -111,7 +212,7 @@ class IndentityView extends GetView<IndentityController> {
 
   Container imageFramBlurBack() {
     return Container(
-      margin: EdgeInsets.all(10),
+      // margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.r),
           color: Colors.grey.shade800,

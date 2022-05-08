@@ -6,11 +6,24 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:io' as io;
 
-class IndentityController extends GetxController {
+class IndentityController extends GetxController with StateMixin<List<Breed>> {
+  BreedProvider _apiProvider = BreedProvider();
+
   var imageFile = io.File('').obs;
   Rx<io.File>? catImage = io.File('').obs;
   RxString result = ''.obs;
   var imagePicker = ImagePicker().obs;
+  RxList<Breed> catBreeds = <Breed>[].obs;
+  Rx<Breed> catInfo = Breed().obs;
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   _apiProvider.fetchProducts().then((response) {
+  //     change(response, status: RxStatus.success());
+  //   }, onError: (err) {
+  //     change(null, status: RxStatus.error(err.toString()));
+  //   });
+  // }
 
   loadDataModelFiles() async {
     String? output = await Tflite.loadModel(
@@ -24,8 +37,6 @@ class IndentityController extends GetxController {
   }
 
   doImageClassification() async {
-    var catDataREsponse = BreedProvider().getBreeds();
-    print(catDataREsponse);
     if (catImage?.value != null) {
       var recognitions = await Tflite.runModelOnImage(
           path: catImage!.value.path,
@@ -36,10 +47,31 @@ class IndentityController extends GetxController {
           asynch: true);
 
       recognitions!.forEach((element) {
-        print(element.toString());
         result.value = element["label"];
       });
     }
+
+    await _apiProvider.fetchBreeds().then((response) async {
+      change(response, status: RxStatus.success());
+      catBreeds.value = response;
+    }, onError: (err) {
+      change(null, status: RxStatus.error(err.toString()));
+    });
+
+    if (result != "") {
+      List<Breed> selectedBreed =
+          // catBreeds.where((o) => o.name == result.value.toString()).toList();
+          catBreeds
+              .where((o) =>
+                  o.name.toString().toLowerCase() ==
+                  result.value.toString().toLowerCase())
+              .toList();
+      selectedBreed.length > 0 ? catInfo.value = selectedBreed[0] : null;
+
+      // catInfo.value =
+      print(catInfo.value);
+    }
+
     update();
   }
 

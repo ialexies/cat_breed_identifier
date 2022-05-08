@@ -78,6 +78,8 @@ class Breed {
       this.referenceImageId,
       this.image});
 
+  Breed.fromJsonList(Map<String, dynamic> json) {}
+
   Breed.fromJson(Map<String, dynamic> json) {
     weight = json['weight'] != null ? Weight?.fromJson(json['weight']) : null;
     id = json['id'];
