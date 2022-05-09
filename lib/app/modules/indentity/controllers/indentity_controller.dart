@@ -15,15 +15,6 @@ class IndentityController extends GetxController with StateMixin<List<Breed>> {
   var imagePicker = ImagePicker().obs;
   RxList<Breed> catBreeds = <Breed>[].obs;
   Rx<Breed> catInfo = Breed().obs;
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   _apiProvider.fetchProducts().then((response) {
-  //     change(response, status: RxStatus.success());
-  //   }, onError: (err) {
-  //     change(null, status: RxStatus.error(err.toString()));
-  //   });
-  // }
 
   loadDataModelFiles() async {
     String? output = await Tflite.loadModel(
@@ -49,11 +40,13 @@ class IndentityController extends GetxController with StateMixin<List<Breed>> {
       recognitions!.forEach((element) {
         result.value = element["label"];
       });
+      update();
     }
 
     await _apiProvider.fetchBreeds().then((response) async {
       change(response, status: RxStatus.success());
       catBreeds.value = response;
+      update();
     }, onError: (err) {
       change(null, status: RxStatus.error(err.toString()));
     });
@@ -67,9 +60,6 @@ class IndentityController extends GetxController with StateMixin<List<Breed>> {
                   result.value.toString().toLowerCase())
               .toList();
       selectedBreed.length > 0 ? catInfo.value = selectedBreed[0] : null;
-
-      // catInfo.value =
-      print(catInfo.value);
     }
 
     update();
