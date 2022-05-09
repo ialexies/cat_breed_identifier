@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cat_breed_identifier/app/modules/global_widgets/rank_star.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,7 @@ class IndentityView extends GetView<IndentityController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        backgroundColor: Colors.yellow,
+        // backgroundColor: Colors.yellow,
         // appBar: AppBar(
         //   title: const Text('Cat Identifier'),
         // ),
@@ -25,7 +26,7 @@ class IndentityView extends GetView<IndentityController> {
                 pinned: true,
                 floating: true,
                 snap: true,
-                expandedHeight: 230.0,
+                expandedHeight: 250.0.sp,
                 centerTitle: true,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
@@ -35,12 +36,14 @@ class IndentityView extends GetView<IndentityController> {
                       '${controller.result}'.toUpperCase(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
                   ),
                   background: Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.red,
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                    color: Colors.amber,
                     child: SafeArea(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,21 +55,52 @@ class IndentityView extends GetView<IndentityController> {
                           Expanded(
                             flex: 2,
                             child: Container(
-                              padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                              child: controller.catInfo.value != null
+                              padding: EdgeInsets.only(left: 10),
+                              child: controller.catInfo.value == null
                                   ? SizedBox()
                                   : Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         AutoSizeText(
-                                          '${controller.result}'.toUpperCase(),
-                                          textAlign: TextAlign.center,
+                                          'Temperament',
                                           style: TextStyle(
-                                              fontSize: 18.sp,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Text(''),
+                                        AutoSizeText(
+                                          '${controller.catInfo.value.temperament}',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 8.sp),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        AutoSizeText(
+                                          'Life Span',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        AutoSizeText(
+                                          '${controller.catInfo.value.lifeSpan} Years',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 8.sp),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        AutoSizeText(
+                                          'Origin',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        AutoSizeText(
+                                          '${controller.catInfo.value.origin} Years',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 8.sp),
+                                        ),
                                       ],
                                     ),
                             ),
@@ -78,78 +112,258 @@ class IndentityView extends GetView<IndentityController> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 27.sp),
-                    SizedBox(height: 27.sp),
-                    Text(
-                      'Breed Info'.toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Text('Details'),
-                          Text('${controller.catInfo.value.description}'),
-                          Divider(),
-                          Text('Temperament'),
-                          Text('${controller.catInfo.value.temperament}'),
-                          Divider(),
-                          Text('Origin'),
-                          Text('${controller.catInfo.value.origin}'),
-                          Divider(),
-                          Text('Life Span'),
-                          Text('${controller.catInfo.value.lifeSpan}'),
-                          Divider(),
-                          Text('Weight'),
-                          Text(
-                              '${controller.catInfo.value.weight?.metric ?? 0} Kg'),
-                          Divider(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  child: SizedBox(
+                height: 16,
+              )),
               SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 27.sp),
-                    SizedBox(height: 27.sp),
-                    Text(
-                      'Breed Info'.toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                    controller.catInfo.value != null
-                        ? SizedBox()
-                        : Container(
-                            child: Column(
+                child: controller.catInfo.value.id == null
+                    ? SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Wrap(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Details'),
-                                Text('${controller.catInfo.value.description}'),
-                                Divider(),
-                                Text('Temperament'),
-                                Text('${controller.catInfo.value.temperament}'),
-                                Divider(),
-                                Text('Origin'),
-                                Text('${controller.catInfo.value.origin}'),
-                                Divider(),
-                                Text('Life Span'),
-                                Text('${controller.catInfo.value.lifeSpan}'),
-                                Divider(),
-                                Text('Weight'),
+                                Container(
+                                  // width: 300,
+                                  child: Wrap(
+                                    spacing: 5.sp,
+                                    children: [
+                                      Container(
+                                        width: .30.sw,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Intelligence',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RankStar(
+                                              controller
+                                                  .catInfo.value.intelligence,
+                                              maxStar: 5,
+                                              iconSize: 18.sp,
+                                              starColor: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: .30.sw,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Adaptability',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RankStar(
+                                              controller
+                                                  .catInfo.value.adaptability,
+                                              maxStar: 5,
+                                              iconSize: 18.sp,
+                                              starColor: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: .30.sw,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Dog Friendly',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RankStar(
+                                              controller
+                                                  .catInfo.value.dogFriendly,
+                                              maxStar: 5,
+                                              iconSize: 18.sp,
+                                              starColor: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: .30.sw,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Affection ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RankStar(
+                                              controller
+                                                  .catInfo.value.affectionLevel,
+                                              maxStar: 5,
+                                              iconSize: 18.sp,
+                                              starColor: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: .30.sw,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Child Friendly',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RankStar(
+                                              controller
+                                                  .catInfo.value.childFriendly,
+                                              maxStar: 5,
+                                              iconSize: 18.sp,
+                                              starColor: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: .30.sw,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Energy',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RankStar(
+                                              controller
+                                                  .catInfo.value.energyLevel,
+                                              maxStar: 5,
+                                              iconSize: 18.sp,
+                                              starColor: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
                                 Text(
-                                    '${controller.catInfo.value.weight?.metric ?? 0} Kg'),
-                                Divider(),
+                                  'Breed Info'.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Details'),
+                                      Text(
+                                          '${controller.catInfo.value.description}'),
+                                      Divider(),
+                                      Text('Temperament'),
+                                      Text(
+                                          '${controller.catInfo.value.temperament}'),
+                                      Divider(),
+                                      Text('Origin'),
+                                      Text(
+                                          '${controller.catInfo.value.origin}'),
+                                      Divider(),
+                                      Text('Life Span'),
+                                      Text(
+                                          '${controller.catInfo.value.lifeSpan}'),
+                                      Divider(),
+                                      Text('Weight'),
+                                      Text(
+                                          '${controller.catInfo.value.weight?.metric ?? 0} Kg'),
+                                      Divider(),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                  ],
-                ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AutoSizeText(
+                                      'Intelligence',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    RankStar(
+                                      controller.catInfo.value.intelligence,
+                                      maxStar: 5,
+                                      starColor: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  'Breed Info'.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Details'),
+                                      Text(
+                                          '${controller.catInfo.value.description}'),
+                                      Divider(),
+                                      Text('Temperament'),
+                                      Text(
+                                          '${controller.catInfo.value.temperament}'),
+                                      Divider(),
+                                      Text('Origin'),
+                                      Text(
+                                          '${controller.catInfo.value.origin}'),
+                                      Divider(),
+                                      Text('Life Span'),
+                                      Text(
+                                          '${controller.catInfo.value.lifeSpan}'),
+                                      Divider(),
+                                      Text('Weight'),
+                                      Text(
+                                          '${controller.catInfo.value.weight?.metric ?? 0} Kg'),
+                                      Divider(),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
               ),
             ],
           ),
